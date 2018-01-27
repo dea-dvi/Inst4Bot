@@ -1,0 +1,13 @@
+{
+  "name": "5bibot",
+  "version": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Cavalleri",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.29.0"
+  }
+}
