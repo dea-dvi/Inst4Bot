@@ -1,13 +1,14 @@
 {
-  "name": "5bibot",
+  "name": "Inst4Bot",
   "version": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Alex Cavalleri",
+  "author": "Davide Rosselli",
   "license": "ISC",
   "dependencies": {
-    "node-telegram-bot-api": "^0.29.0"
+    "node-telegram-bot-api": "^0.29.0",
+    "request": "^2.83.0"
   }
 }
