@@ -18,7 +18,7 @@ bot.onText(/\/pp (.+)/, (msg, match) => {
     let chatId = msg.chat.id;
     //username = elemento 1
     let usr = match[1];
-    if (usr != undefined) {
+    if (usr != null) {
         //prendo json dell'utente
         let jsonURL = "https://www.instagram.com/" + usr + "/?__a=1";
         let usrAcc ="https://www.instagram.com/" + usr;
@@ -32,19 +32,23 @@ bot.onText(/\/pp (.+)/, (msg, match) => {
                 //elemento json ritornato dalla richiesta
                 let tmp = body.user.profile_pic_url
                 //splitto agli slash per eliminare firma
+                //console.log(tmp);
                 let ppURL = tmp.split('/');
-                if(ppURL[8]!=null){
+                //console.log(ppURL);
                 //concateno elementi splittati e ottengo res originale
-                let finalURL = (ppURL[0] + '/' + ppURL[1] + '/' + ppURL[2] + '/' + ppURL[6] + '/' + ppURL[7] + '/' + ppURL[8]).replace('150x150', '');
+                let finalURL = (ppURL[0] + '/' + ppURL[1] + '/' + ppURL[2] + '/' + ppURL[6] + '/' + ppURL[7] + '/' + ppURL[8]).replace('150x150', '').replace('/undefined','');
                 //console.log(finalURL);
-                bot.sendMessage(chatId, finalURL.toString()+'\n'+usrAcc);
+                //image name per i senza immagine profilo
+                if (finalURL.indexOf("11906329_960233084022564_1448528159")!==-1){
+                bot.sendMessage(chatId, usrAcc+'\n'+"Non ha alcuna foto profilo");
                 }
                 else{
-                    bot.sendMessage(chatId, usrAcc+'\n'+"Non ha alcuna foto profilo");
+                    bot.sendMessage(chatId, "<a href=\""+finalURL.toString()+"\">Foto profilo </a>"+"di "+"<a href=\""+usrAcc+"\">"+usr+"</a>", {parse_mode : "HTML"});
+
                 }
 
             }
-            if (response.statusCode != 200) {
+            if (error || response.statusCode != 200) {
                 bot.sendMessage(chatId, "Username non valido");
             }
         })
@@ -53,4 +57,14 @@ bot.onText(/\/pp (.+)/, (msg, match) => {
         bot.sendMessage(chatId, "Devi passarmi uno username");
     }
 
+})
+
+bot.onText(/\/help (.+)/, (msg, match) => {
+    let chatId = msg.chat.id;
+    //comando su cui si chiede l'help
+    console.log("object");
+    let c = match[1];
+   // if(c==null){
+        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\ncomando1 - desc 1\ncomando2 - desc2");
+    //}
 })
