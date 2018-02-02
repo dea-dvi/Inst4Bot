@@ -36,7 +36,10 @@ bot.on('message', (msg) => {
             }
             return letter;
         }
-    }
+    } //Goodboi.
+	else if(t.toUpperCase()=="ARRAYS START AT 0" ||t.toUpperCase()=="ARRAY START AT 0"){
+		bot.sendMessage(msg.chat.id,"Good boi");
+	}
 })
 
 bot.onText(/\/(.+)/, function (msg, match) {
