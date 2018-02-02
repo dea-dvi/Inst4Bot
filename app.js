@@ -57,7 +57,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
             help();
             break;
         default:
-            help()
+            //help()
             break;
     }
 
