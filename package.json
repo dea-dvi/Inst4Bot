@@ -8,6 +8,8 @@
   "author": "Davide Rosselli",
   "license": "ISC",
   "dependencies": {
+    "knex": "^0.14.2",
+    "mysql": "^2.15.0",
     "node-telegram-bot-api": "^0.29.0",
     "request": "^2.83.0"
   }

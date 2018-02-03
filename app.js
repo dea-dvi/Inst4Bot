@@ -1,7 +1,16 @@
 process.env["NTBA_FIX_319"] = 1;
 const TelegramBot = require('node-telegram-bot-api');
 var request = require("request")
-//const orario = require('./orario.js');
+var knex = require("knex")({
+    client: 'mysql',
+    connection: {
+      host : '127.0.0.1',
+      user : 'root',
+      password : 'root',
+      database : 'inst4bot'
+    }
+  });
+
 const token = '481809450:AAEuvKigRP6SeZYTlNGhuyu0C90UA_TZFAE';
 var chatsIDS = []
 // Create a bot that uses 'polling' to fetch new updates
@@ -46,7 +55,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     console.log("...so far so good...");
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
-
+    //pushare chatid in db?
     var arr = match[1].split(' ');
     var command = arr[0].toString();
     var arg = arr[1]
@@ -62,9 +71,18 @@ bot.onText(/\/(.+)/, function (msg, match) {
         case "help@Inst4bot":
             help();
             break;
+        case "adduser":
+            adduser();
+            break;
+
         default:
             //help()
             break;
+    }
+
+    function adduser()
+    {
+        //fare cose
     }
 
     function proPic() {
