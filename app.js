@@ -30,16 +30,16 @@ bot.on('message', (msg) => {
         bot.sendMessage(msg.chat.id, "VA B" + getE(250) + "N" + getE(150));
 
         function getE(taac) {
-            let letter ="E";
+            let letter = "E";
             for (i = 0; i < getRandomInt(4, taac); i++) {
                 letter += "E";
             }
             return letter;
         }
     } //Goodboi.
-	else if(t.toUpperCase()=="ARRAYS START AT 0" ||t.toUpperCase()=="ARRAY START AT 0"){
-		bot.sendMessage(msg.chat.id,"Good boi");
-	}
+    else if (t.toUpperCase() == "ARRAYS START AT 0" || t.toUpperCase() == "ARRAY START AT 0") {
+        bot.sendMessage(msg.chat.id, "Good boi");
+    }
 })
 
 bot.onText(/\/(.+)/, function (msg, match) {
@@ -57,6 +57,9 @@ bot.onText(/\/(.+)/, function (msg, match) {
             proPic();
             break;
         case "help":
+            help();
+            break;
+        case "help@Inst4bot":
             help();
             break;
         default:
