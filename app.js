@@ -31,7 +31,7 @@ stdin.addListener("data", function (d) {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
+/*
 //SCOSSA?
 bot.on('message', (msg) => {
     var t = msg.text.toString()
@@ -49,7 +49,7 @@ bot.on('message', (msg) => {
     else if (t.toUpperCase() == "ARRAYS START AT 0" || t.toUpperCase() == "ARRAY START AT 0") {
         bot.sendMessage(msg.chat.id, "Good boi");
     }
-})
+})*/
 
 bot.onText(/\/(.+)/, function (msg, match) {
     console.log("...so far so good...");
