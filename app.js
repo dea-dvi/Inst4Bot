@@ -18,16 +18,21 @@ const bot = new TelegramBot(token, {
     polling: true
 });
 console.log("let's get started...");
+
+//abbreviazione perché sono pigro
+let parse_HTML ={parse_mode: "HTML"}
+
 /*var stdin = process.openStdin();
 
 stdin.addListener("data", function (d) {
     // note:  d is an object, and when converted to a string it will
     // end with a linefeed.  so we (rather crudely) account for that  
     // with toString() and then trim() 
-//prendere il controllo del bot
-//id gruppo di classe
+    //prendere il controllo del bot
+    //id gruppo di classe
     bot.sendMessage("-1001060088404", d.toString());
 });*/
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -55,10 +60,12 @@ bot.onText(/\/(.+)/, function (msg, match) {
     console.log("...so far so good...");
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
+    //abbreviazione da usare sul sendmessage per rispondere al messaggio
+    let reply = {reply_to_message_id: msg.message_id};
     //pushare chatid in db?
-    var arr = match[1].split(' ');
-    var command = arr[0].toString();
-    var arg = arr[1]
+    let arr = match[1].split(' ');
+    let command = arr[0].toString();
+    let arg = arr[1]
     console.log(chatId);
     console.log(match[1]);
     switch (command) {
@@ -112,23 +119,21 @@ bot.onText(/\/(.+)/, function (msg, match) {
                     if (finalURL.indexOf("11906329_960233084022564_1448528159") !== -1) {
                         bot.sendMessage(chatId, usrAcc + '\n' + "Non ha alcuna foto profilo");
                     } else {
-                        bot.sendMessage(chatId, "<a href=\"" + finalURL.toString() + "\">Foto profilo </a>" + "di " + "<a href=\"" + usrAcc + "\">" + usr + "</a>", {
-                            parse_mode: "HTML"
-                        });
+                        bot.sendMessage(chatId, "<a href=\"" + finalURL.toString() + "\">Foto profilo </a>" + "di " + "<a href=\"" + usrAcc + "\">" + usr + "</a>", parse_HTML);
 
                     }
 
                 }
                 if (error || response.statusCode != 200) {
-                    bot.sendMessage(chatId, "Username non valido");
+                    bot.sendMessage(chatId, "Username non valido", reply);
                 }
             })
         } else {
-            bot.sendMessage(chatId, "Devi passarmi uno username");
+            bot.sendMessage(chatId, "Devi passarmi uno username", reply);
         }
     }
 
     function help() {
-        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\ncomando1 - desc 1\ncomando2 - desc2");
+        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\ncomando1 - desc 1\ncomando2 - desc2", reply);
     }
 })
