@@ -4,12 +4,12 @@ var request = require("request")
 var knex = require("knex")({
     client: 'mysql',
     connection: {
-      host : '127.0.0.1',
-      user : 'root',
-      password : 'root',
-      database : 'inst4bot'
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'root',
+        database: 'inst4bot'
     }
-  });
+});
 
 const token = '481809450:AAEuvKigRP6SeZYTlNGhuyu0C90UA_TZFAE';
 var chatsIDS = []
@@ -20,7 +20,9 @@ const bot = new TelegramBot(token, {
 console.log("let's get started...");
 
 //abbreviazione perché sono pigro
-let parse_HTML ={parse_mode: "HTML"}
+let parse_HTML = {
+    parse_mode: "HTML"
+}
 
 /*var stdin = process.openStdin();
 
@@ -61,7 +63,9 @@ bot.onText(/\/(.+)/, function (msg, match) {
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
     //abbreviazione da usare sul sendmessage per rispondere al messaggio
-    let reply = {reply_to_message_id: msg.message_id};
+    let reply = {
+        reply_to_message_id: msg.message_id
+    };
     //pushare chatid in db?
     let arr = match[1].split(' ');
     let command = arr[0].toString();
@@ -70,7 +74,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     console.log(match[1]);
     switch (command) {
         case "pp":
-            proPic();
+            proPic(arg);
             break;
         case "help":
             help();
@@ -79,7 +83,10 @@ bot.onText(/\/(.+)/, function (msg, match) {
             help();
             break;
         case "adduser":
-            adduser();
+            adduser(arg);
+            break;
+        case "st":
+            getUserStories(arg);
             break;
 
         default:
@@ -87,14 +94,15 @@ bot.onText(/\/(.+)/, function (msg, match) {
             break;
     }
 
-    function adduser()
-    {
+    function adduser() {
         //fare cose
     }
 
-    function proPic() {
-        //username = elemento 1
-        let usr = arr[1];
+    function getUserStories() {
+
+    }
+
+    function proPic(usr) {
         if (usr != null) {
             //prendo json dell'utente
             let jsonURL = "https://www.instagram.com/" + usr + "/?__a=1";
@@ -117,7 +125,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
                     //console.log(finalURL);
                     //image name per i senza immagine profilo
                     if (finalURL.indexOf("11906329_960233084022564_1448528159") !== -1) {
-                        bot.sendMessage(chatId, usrAcc + '\n' + "Non ha alcuna foto profilo");
+                        bot.sendMessage(chatId, "<a href=\"" + usrAcc + "\">" + usr + "\n" + "</a>" + "Non ha alcuna foto profilo", parse_HTML);
                     } else {
                         bot.sendMessage(chatId, "<a href=\"" + finalURL.toString() + "\">Foto profilo </a>" + "di " + "<a href=\"" + usrAcc + "\">" + usr + "</a>", parse_HTML);
 
