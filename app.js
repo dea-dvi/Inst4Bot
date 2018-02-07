@@ -59,18 +59,19 @@ bot.on('message', (msg) => {
 })*/
 
 bot.onText(/\/(.+)/, function (msg, match) {
-    console.log("...so far so good...");
+    console.log("Received:" + msg.text + "; From usrID:" + msg.from.id + "; In chat:" + msg.chat.id);
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
     //abbreviazione da usare sul sendmessage per rispondere al messaggio
     let reply = {
         reply_to_message_id: msg.message_id
     };
-    //pushare chatid in db?
+    //mando evento typing alla chat, perché fa figo
+    bot.sendChatAction(chatId, "typing")
+
     let arr = match[1].split(' ');
     let command = arr[0].toString();
     let arg = arr[1]
-    console.log(chatId);
     console.log(match[1]);
     switch (command) {
         case "pp":
@@ -98,9 +99,16 @@ bot.onText(/\/(.+)/, function (msg, match) {
         //fare cose
     }
 
-    function getUserStories() {
-
+    function getUserStories(usr) {
+        if (usr != null) {
+            //prendo json dell'utente
+            let jsonURL = "https://api.storiesig.com/stories/"+ usr ;
+            let usrAcc = "https://www.instagram.com/" + usr;
+            //controllare json imageversion2 o video o entrambi
+        }
     }
+
+    //posso decisamente risparmiare e riutilizzare del codice fra questi due metodi
 
     function proPic(usr) {
         if (usr != null) {
