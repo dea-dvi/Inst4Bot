@@ -24,7 +24,7 @@ let parse_HTML = {
 }
 
 bot.onText(/\/(.+)/, function (msg, match) {
-    console.log("Received:" + msg.text + "; From usrID:" + msg.from.id + "; In chat:" + msg.chat.id);
+    console.log("Received:" + msg.text + "; From usrID:" + msg.from.id + "; whose names is:" + msg.from.id + "; From usrID:" + msg.from.id + "; In chat:" + msg.chat.id);
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
     //abbreviazione da usare sul sendmessage per rispondere al messaggio
@@ -32,7 +32,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
         reply_to_message_id: msg.message_id
     };
     //mando evento typing alla chat, perché fa figo
-    bot.sendChatAction(chatId, "typing")
+    var typing = bot.sendChatAction(chatId, "typing");
 
     let arr = match[1].split(' ');
     let command = arr[0].toString();
