@@ -69,7 +69,8 @@ bot.onText(/\/(.+)/, function (msg, match) {
             //prendo json dell'utente
             let jsonURL = "https://api.storiesig.com/stories/" + usr;
             let usrAcc = "https://www.instagram.com/" + usr;
-            //controllare json imageversion2 o video o entrambi
+            //controllare json imageversion2 o video o entrambi o BOOOOHHHH
+            //mettere tutto in db everytime o non so sono stanco
         }
     }
 
