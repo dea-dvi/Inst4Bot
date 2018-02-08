@@ -10,53 +10,18 @@ var knex = require("knex")({
         database: 'inst4bot'
     }
 });
-
 const token = '481809450:AAEuvKigRP6SeZYTlNGhuyu0C90UA_TZFAE';
-var chatsIDS = []
-// Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {
     polling: true
 });
-console.log("let's get started...");
 
+console.log("let's get started...");
+/////////////////////////////////////////////////////
+var chatsIDS = []
 //abbreviazione perché sono pigro
 let parse_HTML = {
     parse_mode: "HTML"
 }
-
-/*var stdin = process.openStdin();
-
-stdin.addListener("data", function (d) {
-    // note:  d is an object, and when converted to a string it will
-    // end with a linefeed.  so we (rather crudely) account for that  
-    // with toString() and then trim() 
-    //prendere il controllo del bot
-    //id gruppo di classe
-    bot.sendMessage("-1001060088404", d.toString());
-});*/
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-/*
-//SCOSSA?
-bot.on('message', (msg) => {
-    var t = msg.text.toString()
-    if (t.toUpperCase() == "SCOSSA?") {
-        bot.sendMessage(msg.chat.id, "VA B" + getE(250) + "N" + getE(150));
-
-        function getE(taac) {
-            let letter = "E";
-            for (i = 0; i < getRandomInt(4, taac); i++) {
-                letter += "E";
-            }
-            return letter;
-        }
-    } //Goodboi.
-    else if (t.toUpperCase() == "ARRAYS START AT 0" || t.toUpperCase() == "ARRAY START AT 0") {
-        bot.sendMessage(msg.chat.id, "Good boi");
-    }
-})*/
 
 bot.onText(/\/(.+)/, function (msg, match) {
     console.log("Received:" + msg.text + "; From usrID:" + msg.from.id + "; In chat:" + msg.chat.id);
@@ -102,7 +67,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     function getUserStories(usr) {
         if (usr != null) {
             //prendo json dell'utente
-            let jsonURL = "https://api.storiesig.com/stories/"+ usr ;
+            let jsonURL = "https://api.storiesig.com/stories/" + usr;
             let usrAcc = "https://www.instagram.com/" + usr;
             //controllare json imageversion2 o video o entrambi
         }
@@ -153,3 +118,41 @@ bot.onText(/\/(.+)/, function (msg, match) {
         bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\ncomando1 - desc 1\ncomando2 - desc2", reply);
     }
 })
+
+
+// altre cose
+/*
+var stdin = process.openStdin();
+{
+stdin.addListener("data", function (d) {
+    // note:  d is an object, and when converted to a string it will
+    // end with a linefeed.  so we (rather crudely) account for that  
+    // with toString() and then trim() 
+    //prendere il controllo del bot
+    //id gruppo di classe
+    bot.sendMessage("-1001060088404", d.toString());
+});
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+//SCOSSA?
+bot.on('message', (msg) => {
+    var t = msg.text.toString()
+    if (t.toUpperCase() == "SCOSSA?") {
+        bot.sendMessage(msg.chat.id, "VA B" + getE(250) + "N" + getE(150));
+
+        function getE(taac) {
+            let letter = "E";
+            for (i = 0; i < getRandomInt(4, taac); i++) {
+                letter += "E";
+            }
+            return letter;
+        }
+    } //Goodboi.
+    else if (t.toUpperCase() == "ARRAYS START AT 0" || t.toUpperCase() == "ARRAY START AT 0") {
+        bot.sendMessage(msg.chat.id, "Good boi");
+    }
+})
+*/
