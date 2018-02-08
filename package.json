@@ -1,9 +1,14 @@
 {
   "name": "inst4bot",
-  "version": "",
+  "version": "1.0.0",
+  "description": "Bot per Telegram che fa varie cose su Instagram...",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.marconirovereto.it/Davide.Rosselli/Inst4Bot.git"
   },
   "author": "Davide Rosselli",
   "license": "ISC",
