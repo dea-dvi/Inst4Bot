@@ -15,6 +15,9 @@ const bot = new TelegramBot(token, {
     polling: true
 });
 
+//mando evento typing alla chat, perché fa figo
+function sendTyping(cID) { bot.sendChatAction(cID, "typing") };
+
 console.log("let's get started...");
 /////////////////////////////////////////////////////
 var chatsIDS = []
@@ -27,12 +30,12 @@ bot.onText(/\/(.+)/, function (msg, match) {
     console.log("Received:" + msg.text + "; From usrID:" + msg.from.id + "; whose names is:" + msg.from.id + "; From usrID:" + msg.from.id + "; In chat:" + msg.chat.id);
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
+    let msg_id = msg.message_id;
     //abbreviazione da usare sul sendmessage per rispondere al messaggio
     let reply = {
         reply_to_message_id: msg.message_id
     };
-    //mando evento typing alla chat, perché fa figo
-    var typing = bot.sendChatAction(chatId, "typing");
+
 
     let arr = match[1].split(' ');
     let command = arr[0].toString();
@@ -40,18 +43,23 @@ bot.onText(/\/(.+)/, function (msg, match) {
     console.log(match[1]);
     switch (command) {
         case "pp":
+            sendTyping(chatId)
             proPic(arg);
             break;
         case "help":
+            sendTyping(chatId)
             help();
             break;
         case "help@Inst4bot":
+            sendTyping(chatId)
             help();
             break;
         case "adduser":
+            sendTyping(chatId)
             adduser(arg);
             break;
         case "st":
+            sendTyping(chatId)
             getUserStories(arg);
             break;
 
