@@ -133,7 +133,8 @@ bot.onText(/\/(.+)/, function (msg, match) {
             bot.sendMessage(chatId, "Permessi insufficienti", reply);
         }
         else{
-            //
+            bot.sendMessage(chatId, "Hey boss", reply);
+
         }
     }
 
