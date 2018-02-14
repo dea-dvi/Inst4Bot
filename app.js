@@ -129,7 +129,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     }
 
     function settings(){
-        if(usr_id!=masterUser){
+        if(usr_id!=privSettings.masterUser){
             bot.sendMessage(chatId, "Permessi insufficienti", reply);
         }
         else{
