@@ -1,6 +1,9 @@
+//un fix per la api
 process.env["NTBA_FIX_319"] = 1;
+
 const TelegramBot = require('node-telegram-bot-api');
 var request = require("request")
+var privSettings = require("./private_settings")
 var knex = require("knex")({
     client: 'mysql',
     connection: {
@@ -10,8 +13,8 @@ var knex = require("knex")({
         database: 'inst4bot'
     }
 });
-const token = '481809450:AAEuvKigRP6SeZYTlNGhuyu0C90UA_TZFAE';
-const bot = new TelegramBot(token, {
+
+const bot = new TelegramBot(privSettings.token, {
     polling: true
 });
 
@@ -31,6 +34,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     let chatId = msg.chat.id;
     let msgTxt = msg.text.toString();
     let msg_id = msg.message_id;
+    let usr_id = msg.from.id;
     //abbreviazione da usare sul sendmessage per rispondere al messaggio
     let reply = {
         reply_to_message_id: msg.message_id
@@ -43,26 +47,27 @@ bot.onText(/\/(.+)/, function (msg, match) {
     console.log(match[1]);
     switch (command) {
         case "pp":
-            sendTyping(chatId)
+            sendTyping(chatId);
             proPic(arg);
             break;
         case "help":
-            sendTyping(chatId)
+            sendTyping(chatId);
             help();
             break;
         case "help@Inst4bot":
-            sendTyping(chatId)
+            sendTyping(chatId);
             help();
             break;
         case "adduser":
-            sendTyping(chatId)
+            sendTyping(chatId);
             adduser(arg);
             break;
         case "st":
-            sendTyping(chatId)
+            sendTyping(chatId);
             getUserStories(arg);
             break;
-
+        case "settings":
+            settings();
         default:
             //help()
             break;
@@ -120,6 +125,15 @@ bot.onText(/\/(.+)/, function (msg, match) {
             })
         } else {
             bot.sendMessage(chatId, "Devi passarmi uno username", reply);
+        }
+    }
+
+    function settings(){
+        if(usr_id!=masterUser){
+            bot.sendMessage(chatId, "Permessi insufficienti", reply);
+        }
+        else{
+            //
         }
     }
 
