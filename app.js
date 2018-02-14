@@ -84,6 +84,8 @@ bot.onText(/\/(.+)/, function (msg, match) {
             let usrAcc = "https://www.instagram.com/" + usr;
             //controllare json imageversion2 o video o entrambi o BOOOOHHHH
             //mettere tutto in db everytime o non so sono stanco
+            //magari fare un inline keyboard chiedendo all'utente di selezionare quale storia vuole vedere, o se farle mandare tutte
+            //fare una bella formattazione (singolo messaggio con multipli link + markdown)
         }
     }
 
@@ -130,16 +132,16 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
     function settings(){
         if(usr_id!=privSettings.masterUser){
-            bot.sendMessage(chatId, "Permessi insufficienti", reply);
+            bot.sendMessage(chatId, "Cazzo troppo corto", reply);
         }
         else{
             bot.sendMessage(chatId, "Hey boss", reply);
-
+            //fare cose
         }
     }
 
     function help() {
-        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\ncomando1 - desc 1\ncomando2 - desc2", reply);
+        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\n/st username - ritorna stories utente 1\ncomando2 - desc2", reply);
     }
 })
 
