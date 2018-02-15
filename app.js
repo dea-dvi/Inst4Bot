@@ -122,7 +122,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
                 }
                 if (error || response.statusCode != 200) {
-                    bot.sendMessage(chatId, "Username non valido", reply);
+                    bot.sendMessage(chatId, "Username inesistente", reply);
                 }
             })
         } else {
@@ -141,7 +141,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     }
 
     function help() {
-        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\n/st username - ritorna stories utente 1\ncomando2 - desc2", reply);
+        bot.sendMessage(chatId, "Lista comandi:\n/pp username - ritorna foto profilo\n/st username - ritorna stories utente", reply);
     }
 })
 
