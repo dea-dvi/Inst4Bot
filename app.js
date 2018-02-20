@@ -44,6 +44,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
     let arr = match[1].split(' ');
     let command = arr[0].toString();
     let arg = arr[1]
+    let opt; //opzioni comandi [-g -i]
     console.log(match[1]);
     switch (command) {
         case "pp":
