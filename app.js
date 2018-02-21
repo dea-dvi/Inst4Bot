@@ -19,7 +19,9 @@ const bot = new TelegramBot(privSettings.token, {
 });
 
 //mando evento typing alla chat, perché fa figo
-function sendTyping(cID) { bot.sendChatAction(cID, "typing") };
+function sendTyping(cID) {
+    bot.sendChatAction(cID, "typing")
+};
 
 console.log("let's get started...");
 /////////////////////////////////////////////////////
@@ -44,11 +46,11 @@ bot.onText(/\/(.+)/, function (msg, match) {
     let command = arr[0].toString();
     let arg = arr[1]
     let opt; //opzioni comandi [-g -i]
-    console.log("command: "+command);
+    console.log("command: " + command);
     switch (command) {
         case "pp":
             sendTyping(chat_id);
-            proPic(arg);
+            getProPic(arg);
             break;
         case "help":
             sendTyping(chat_id);
@@ -68,13 +70,45 @@ bot.onText(/\/(.+)/, function (msg, match) {
             break;
         case "settings":
             settings();
-        default:
-            //help()
+            break;
+        case "profile":
+            getProfileInfo();
+            break;
+        case "settings":
+            settings();
             break;
     }
 
     function adduser() {
         //fare cose
+    }
+
+    //funzione per pulire gli url dalla firma e dalla size
+    function cleanURLs() {}
+
+    function getStoriesURLs(e) {
+        let c = [];
+        if (e != null) {
+            e.forEach(element => {
+                //mediatype 1 = foto, 2 = video
+                if (element.media_type == 1) {
+                    c.push(element.image_versions2.candidates[0].url)
+                } else if (element.media_type == 2) {
+                    c.push(element.video_versions[0].url)
+                }
+            });
+            return c;
+        }
+        return 0;
+
+
+    }
+    //takes an array and returns string formatted with newlines
+    function arrToStrNewlined(a) {
+        if (a != 0) {
+            return a.toString().split(",").join("\n");
+        }
+        return 0;
     }
 
     function getUserStories(usr) {
@@ -86,29 +120,34 @@ bot.onText(/\/(.+)/, function (msg, match) {
                 url: jsonURL,
                 json: true
             }, function (error, response, body) {
-
                 if (!error && response.statusCode === 200) {
-                    let media=[];
-                    body.items.forEach(element => {
-                        if(element.media_type==1){
-                            media.push(element.image_versions2.candidates[0].url)
+                    if (body.user.is_private == false) {
+                        let media = getStoriesURLs(body.items);
+                        //funzione che pulisce gli url da firma e size - ricordarsi cosa passare alla funzione qua sotto
+                        let mess = arrToStrNewlined(media); //yea it's a mess
+                        if (mess == 0) {
+                            bot.sendMessage(chat_id, "Nessuna storia", reply);
+                        } else {
+                            bot.sendMessage(chat_id, mess, reply);
                         }
-                        else if(element.media_type==2){
-                            media.push(element.video_versions[0].url)
-                        }
-                    });
-                    bot.sendMessage(chat_id, media.toString(), reply);
+                    } else if (body.user.is_private == true) {
+                        bot.sendMessage(chat_id, "Profilo privato :(", reply);
+                    }
+
                 }
+
             })
             //mettere tutto in db everytime o non so sono stanco
             //magari fare un inline keyboard chiedendo all'utente di selezionare quale storia vuole vedere, o se farle mandare tutte
+        } else {
+            bot.sendMessage(chat_id, "Devi passarmi uno username", reply);
         }
     }
-// fare funzione request separata
-// gestire messaggio stories con markdown
+    // fare funzione request separata
+    // gestire messaggio stories con markdown
     //posso decisamente risparmiare e riutilizzare del codice fra questi due metodi, utilizzare db magari
 
-    function proPic(usr) {
+    function getProPic(usr) {
         if (usr != null) {
             //prendo json dell'utente
             let jsonURL = "https://www.instagram.com/" + usr + "/?__a=1";
@@ -147,11 +186,10 @@ bot.onText(/\/(.+)/, function (msg, match) {
         }
     }
 
-    function settings(){
-        if(usr_id!=privSettings.masterUser){
+    function settings() {
+        if (usr_id != privSettings.masterUser) {
             bot.sendMessage(chat_id, "Cazzo troppo corto", reply);
-        }
-        else{
+        } else {
             bot.sendMessage(chat_id, "Hey boss", reply);
             //fare cose
         }
