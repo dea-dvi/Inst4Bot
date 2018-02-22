@@ -1,0 +1,11 @@
+var knex = require("knex")({
+    client: 'mysql',
+    connection: {
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'root',
+        database: 'inst4bot'
+    }
+});
+
+//funzioni per db da rendere accessibili ed utilizzare in app.js

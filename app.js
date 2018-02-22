@@ -4,15 +4,6 @@ process.env["NTBA_FIX_319"] = 1;
 const TelegramBot = require('node-telegram-bot-api');
 var request = require("request")
 var privSettings = require("./private_settings")
-var knex = require("knex")({
-    client: 'mysql',
-    connection: {
-        host: '127.0.0.1',
-        user: 'root',
-        password: 'root',
-        database: 'inst4bot'
-    }
-});
 
 const bot = new TelegramBot(privSettings.token, {
     polling: true
