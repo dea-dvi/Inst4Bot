@@ -2,8 +2,8 @@
 process.env["NTBA_FIX_319"] = 1;
 
 const TelegramBot = require('node-telegram-bot-api');
-var request = require("request")
-var privSettings = require("./private_settings")
+var request = require("request");
+var privSettings = require("./private_settings");
 
 const bot = new TelegramBot(privSettings.token, {
     polling: true
@@ -16,7 +16,7 @@ function sendTyping(cID) {
 
 console.log("let's get started...");
 /////////////////////////////////////////////////////
-var chatsIDS = []
+var chatsIDS = [];
 //abbreviazione perché sono pigro
 let parse_HTML = {
     parse_mode: "HTML"
@@ -35,7 +35,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
     let arr = match[1].split(' ');
     let command = arr[0].toString();
-    let arg = arr[1]
+    let arg = arr[1];
     let opt; //opzioni comandi [-g -i]
     console.log("command: " + command);
     switch (command) {
@@ -74,18 +74,32 @@ bot.onText(/\/(.+)/, function (msg, match) {
         //fare cose
     }
 
-    //funzione per pulire gli url dalla firma e dalla size
-    function cleanURLs() {}
+    //funzione per pulire gli url dalla firma e dalla size e imgcache 
+    //passato array ritorna array
+    
+    function getCleanURLs(a) {
+        if(Array.isArray(a))
+        let e = [];
+        a.forEach(b => {
+            let c = b.split('/');
+            //concateno elementi splittati e ottengo res originale e altre cose
+            let d = (c[0] + '/' + c[1] + '/' + c[2] + '/' + c[6] + '/' + c[7] + '/' + c[8]).replace('150x150', '').replace('/undefined', '').split("?");
+            //console.log(d[0]);
+            //console.log(d[1]);
+            e.push(d[0]);
+        });
+        return e;
+    }
 
-    function getStoriesURLs(e) {
+    function getStoriesMedia(a) {
         let c = [];
-        if (e != null) {
-            e.forEach(element => {
+        if (a != null) {
+            a.forEach(b => {
                 //mediatype 1 = foto, 2 = video
-                if (element.media_type == 1) {
-                    c.push(element.image_versions2.candidates[0].url)
-                } else if (element.media_type == 2) {
-                    c.push(element.video_versions[0].url)
+                if (b.media_type == 1) {
+                    c.push(b.image_versions2.candidates[0].url);
+                } else if (b.media_type == 2) {
+                    c.push(b.video_versions[0].url);
                 }
             });
             return c;
@@ -94,13 +108,14 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
 
     }
-    //takes an array and returns string formatted with newlines
-    function arrToStrNewlined(a) {
+    //takes an array and returns string formatted with two spaces
+    function arrToStrSpaced(a) {
         if (a != 0) {
-            return a.toString().split(",").join("\n");
+            return a.toString().split(",").join(",  ");
         }
         return 0;
     }
+
 
     function getUserStories(usr) {
         if (usr != null) {
@@ -113,9 +128,12 @@ bot.onText(/\/(.+)/, function (msg, match) {
             }, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     if (body.user.is_private == false) {
-                        let media = getStoriesURLs(body.items);
+                        let media = getStoriesMedia(body.items);
                         //funzione che pulisce gli url da firma e size - ricordarsi cosa passare alla funzione qua sotto
-                        let mess = arrToStrNewlined(media); //yea it's a mess
+                        //magari prima shortare i link in qualche modo
+                        let t = getCleanURLs(media);
+                        console.log(t);
+                        let mess = arrToStrSpaced(t); //yea it's a mess
                         if (mess == 0) {
                             bot.sendMessage(chat_id, "Nessuna storia", reply);
                         } else {
@@ -151,13 +169,9 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
                 if (!error && response.statusCode === 200) {
                     //elemento json ritornato dalla richiesta
-                    let tmp = body.user.profile_pic_url
-                    //splitto agli slash per eliminare firma
-                    //console.log(tmp);
-                    let ppURL = tmp.split('/');
-                    //console.log(ppURL);
-                    //concateno elementi splittati e ottengo res originale
-                    let finalURL = (ppURL[0] + '/' + ppURL[1] + '/' + ppURL[2] + '/' + ppURL[6] + '/' + ppURL[7] + '/' + ppURL[8]).replace('150x150', '').replace('/undefined', '');
+                    //let a = body.user.profile_pic_url;
+                    //gli passo false alla funzione per dirle di non trattarlo come array
+                    let finalURL = getCleanURLs(body.user.profile_pic_url);
                     //console.log(finalURL);
                     //image name per i senza immagine profilo
                     if (finalURL.indexOf("11906329_960233084022564_1448528159") !== -1) {
