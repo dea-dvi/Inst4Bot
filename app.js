@@ -21,6 +21,9 @@ var chatsIDS = [];
 let parse_HTML = {
     parse_mode: "HTML"
 }
+let parse_Markdown = {
+    parse_mode: "Markdown"
+}
 
 bot.onText(/\/(.+)/, function (msg, match) {
     let chat_id = msg.chat.id;
@@ -76,19 +79,25 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
     //funzione per pulire gli url dalla firma e dalla size e imgcache 
     //passato array ritorna array
-    
+
     function getCleanURLs(a) {
-        if(Array.isArray(a))
-        let e = [];
-        a.forEach(b => {
-            let c = b.split('/');
+        function f(g) {
+            let c = g.split('/');
             //concateno elementi splittati e ottengo res originale e altre cose
             let d = (c[0] + '/' + c[1] + '/' + c[2] + '/' + c[6] + '/' + c[7] + '/' + c[8]).replace('150x150', '').replace('/undefined', '').split("?");
-            //console.log(d[0]);
-            //console.log(d[1]);
-            e.push(d[0]);
-        });
-        return e;
+            return d[0];
+        }
+        if (Array.isArray(a)) {
+            let e = [];
+            a.forEach(b => {
+                e.push(f(b));
+            });
+            return e;
+        } else if (!Array.isArray(a) && !null) {
+            return f(a);
+        }
+        //per immagini profilo, singolo elemento
+        return 0;
     }
 
     function getStoriesMedia(a) {
@@ -108,14 +117,27 @@ bot.onText(/\/(.+)/, function (msg, match) {
 
 
     }
-    //takes an array and returns string formatted with two spaces
-    function arrToStrSpaced(a) {
+    //takes an array and returns string formatted
+    function arrToStrFormatted(a) {
         if (a != 0) {
             return a.toString().split(",").join(",  ");
         }
         return 0;
     }
 
+    function arrToMkdTxt(a) {
+        if (a != 0) {
+            let c = [];
+            let d = 0;
+            a.forEach(b => {
+                c.push(`[${d}](${b})`)
+                d++;
+            });
+            //console.log(c);
+            return c;
+        }
+        return 0;
+    }
 
     function getUserStories(usr) {
         if (usr != null) {
@@ -128,16 +150,16 @@ bot.onText(/\/(.+)/, function (msg, match) {
             }, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     if (body.user.is_private == false) {
+                        //contiene urls media
                         let media = getStoriesMedia(body.items);
-                        //funzione che pulisce gli url da firma e size - ricordarsi cosa passare alla funzione qua sotto
-                        //magari prima shortare i link in qualche modo
-                        let t = getCleanURLs(media);
-                        console.log(t);
-                        let mess = arrToStrSpaced(t); //yea it's a mess
+                        //contiene url senza firma ecc
+                        let a = getCleanURLs(media);
+                        //preparo per mandare con parseMarkdown e formatto
+                        let mess = arrToStrFormatted(arrToMkdTxt(a)); //yea it's a mess
                         if (mess == 0) {
                             bot.sendMessage(chat_id, "Nessuna storia", reply);
                         } else {
-                            bot.sendMessage(chat_id, mess, reply);
+                            bot.sendMessage(chat_id, `Storie di [${usr}](${usrAcc})\n ` + mess, parse_Markdown);
                         }
                     } else if (body.user.is_private == true) {
                         bot.sendMessage(chat_id, "Profilo privato :(", reply);
@@ -170,7 +192,7 @@ bot.onText(/\/(.+)/, function (msg, match) {
                 if (!error && response.statusCode === 200) {
                     //elemento json ritornato dalla richiesta
                     //let a = body.user.profile_pic_url;
-                    //gli passo false alla funzione per dirle di non trattarlo come array
+                    //controllare errori es return 0 nelle funzioni sopra
                     let finalURL = getCleanURLs(body.user.profile_pic_url);
                     //console.log(finalURL);
                     //image name per i senza immagine profilo
