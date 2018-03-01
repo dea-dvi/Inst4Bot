@@ -93,10 +93,11 @@ bot.onText(/\/(.+)/, function (msg, match) {
                 e.push(f(b));
             });
             return e;
-        } else if (!Array.isArray(a) && !null) {
-            return f(a);
         }
         //per immagini profilo, singolo elemento
+        else if (!Array.isArray(a) && !null) {
+            return f(a);
+        }
         return 0;
     }
 
